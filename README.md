@@ -29,13 +29,13 @@ There are two ways to install. Pick the app you use:
 **Step 2 — in your terminal**, connect your Prism data:
 
 ```
-claude mcp add --transport http --scope user --client-id prism-mcp prism-mcp https://prism.<your-tenant>.cardoaiapps.com/mcp/
+claude mcp add --transport http --scope user --client-id prism-mcp prism https://prism.<your-tenant>.cardoaiapps.com/mcp/
 ```
 
 | Part | What it is |
 |---|---|
 | `--client-id prism-mcp` | The OAuth client ID. **Required** — Prism only accepts `prism-mcp`. |
-| second `prism-mcp` | The local name the connection is saved under. Any name works, but keep `prism-mcp` so it matches these docs. |
+| `prism` | The local name the connection is saved under. Any name works — this is not the client ID. |
 | `--scope user` | Makes the connection work in every folder, not just where you ran the command. |
 | the URL | Your Prism endpoint — paste yours in place of the example. |
 
@@ -45,7 +45,7 @@ Your browser opens to sign in and authorize — one time per machine.
 
 ```
 /plugin list        # prism-analyst is installed
-/mcp                # prism-mcp is connected
+/mcp                # prism is connected
 ```
 
 Then just ask, e.g. *"What's the NAV for `<deal name>` this period, compared to a year ago?"*
@@ -58,7 +58,7 @@ No terminal needed. You add two things in **Settings**: the **Prism custom conne
 
 **1. Add the connector.** Prism is a **custom connector** — you won't find it in Claude's built-in connector directory, so don't search for it there. Go to Settings → **Connectors**, scroll past the pre-built connectors, and click **Add custom connector**.
 
-- **Name:** `prism-mcp` (any name works — this one matches the docs)
+- **Name:** `prism` (any name works — this is just the label, not the client ID)
 - **URL:** your Prism endpoint from CardoAI
 - Open **Advanced settings** and set **OAuth Client ID** to `prism-mcp`. **This is required — the connection fails without it.** Leave the client secret blank unless CardoAI gave you one.
 
