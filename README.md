@@ -1,10 +1,10 @@
 # CardoAI Client Plugins
 
-Plugins from [CardoAI](https://cardoai.com) for asking Claude about your Prism data.
+Plugins from [CardoAI](https://cardoai.com) for asking Claude about your data.
 
 ## Which app do you use?
 
-- **Claude Code** — the terminal or desktop coding app, where you type commands like `/plugin`. Follow **Install** below.
+- **Claude Code** — the terminal, where you type commands like `/plugin`. Follow **Install** below.
 - **Claude app** — claude.ai in the browser, or the desktop chat app (no terminal). Follow [Using the Claude app](plugins/prism-analyst/README.md#using-the-claude-app-claudeai) instead.
 
 ## Install (Claude Code)
