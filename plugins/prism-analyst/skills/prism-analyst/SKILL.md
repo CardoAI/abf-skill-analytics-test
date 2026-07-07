@@ -4,7 +4,7 @@ description: This skill should be used when the user asks about a Prism deal or 
 version: 2.1.0
 ---
 
-# Prism Analyst v3 - Domain-Orchestrated Multi-Agent Retrieval
+# Prism Analyst - Domain-Orchestrated Multi-Agent Retrieval
 
 This skill uses a hierarchical multi-agent architecture where domain-specialized orchestrator agents (Opus) each spawn and manage their own sub-agents (Haiku), exchange data through a shared Working State file, and produce verified, confidence-scored analysis.
 
@@ -51,9 +51,11 @@ If ANY dimension is ambiguous, ask a concise clarifying question. Do NOT guess.
 
 ### Step 1 - Load Deal Context (MANDATORY)
 
-1. `mcp__prism__list_deals()` - resolve deal name to transaction_id. Results are paginated (default `limit=50`); if the deal isn't in the first page, page through with `offset` before asking the user to disambiguate.
-2. `mcp__prism__get_deal_skill(transaction_id=<id>)` - load operator playbook
-3. `mcp__prism__list_field_values(field_name="doc_type", within_transaction_id=<id>)` - discover document types. `field_name` only accepts `transaction_id, doc_type, report_period, table_type, element_type, section, filename, entities` - there is no `entity` or `kpi_name` option here. For entity aliases and KPI names, use `get_deal_skill`'s `entity_aliases` / `kpi_names` fields instead.
+These are the Prism MCP tools, served by the MCP server registered as `prism-mcp`. Call them by name:
+
+1. `list_deals()` - resolve deal name to transaction_id. Results are paginated (default `limit=50`); if the deal isn't in the first page, page through with `offset` before asking the user to disambiguate.
+2. `get_deal_skill(transaction_id=<id>)` - load operator playbook
+3. `list_field_values(field_name="doc_type", within_transaction_id=<id>)` - discover document types. `field_name` only accepts `transaction_id, doc_type, report_period, table_type, element_type, section, filename, entities` - there is no `entity` or `kpi_name` option here. For entity aliases and KPI names, use `get_deal_skill`'s `entity_aliases` / `kpi_names` fields instead.
 
 Extract: periods_available, doc_types, entity aliases, active feedback bundle, enrichment overrides.
 
@@ -134,7 +136,7 @@ Spawn ONE Reporting Agent with `model: "opus"`. Its prompt must include:
 - All narrative fragments for audit
 - Instructions to:
   1. Fill any remaining PENDING metrics (spawn gap-filler Haiku sub-agents)
-  2. Run chart/image corroboration (spawn corroboration Haiku sub-agents): for each flagged `[CHART/IMAGE]` data point, call `mcp__prism__render_figure(chunk_uuid=<id>)` on its `chunk_uuid` (from the originating `search_deal_documents` result header) to check the actual chart pixels, in addition to text/table corroboration
+  2. Run chart/image corroboration (spawn corroboration Haiku sub-agents): for each flagged `[CHART/IMAGE]` data point, call `render_figure(chunk_uuid=<id>)` on its `chunk_uuid` (from the originating `search_deal_documents` result header) to check the actual chart pixels, in addition to text/table corroboration
   3. Audit GP narrative against verified numbers
   4. Compute all period-over-period deltas and flags
   5. Apply confidence scoring (GREEN/AMBER/RED) to every metric
