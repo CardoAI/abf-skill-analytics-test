@@ -264,3 +264,4 @@ Every domain agent follows this when its sub-agents return conflicting data:
 - `references/domain-agents.md` - Full domain agent specifications, metrics, sub-agent strategies, red flag triggers
 - `references/working-state-template.md` - Working State file template and lifecycle
 - `references/prism-tools-reference.md` - Prism MCP tool signatures and parameters
+- `references/artifact-style.md` - colors, typography, page layout, and chart-type defaults for any rendered artifact (HTML dashboard, exported document, image). Consult whenever producing one.

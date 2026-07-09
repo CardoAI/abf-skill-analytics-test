@@ -54,6 +54,22 @@ Defensive patterns the gateway and report runner should follow proactively. Each
 
 **Enforcement:** `get_stratification_analytics_data` tool description.
 
+## Oversized `get_stratification_analytics_data` result
+
+**Failure:** Calling `get_stratification_analytics_data` with no explicit `limit`, or the full 2000-row default/max, on a wide or high-cardinality analytics. The CSV payload exceeds the client's token budget, the tool returns a `result exceeds maximum allowed tokens` error and writes the data to a local file instead of the response, and the agent then answers from data it never actually received.
+
+**Rule:** Pass an explicit, conservative `limit` (start at 50-100 rows for exploratory/narrow questions and report blocks, which only need a handful of figures) rather than relying on the 2000 default. On an oversized-result error, retry the same call with a smaller `limit` and/or a filter from `get_filterable_columns` that narrows the row count — never read or guess at data from the local file path in the error.
+
+**Enforcement:** `abf-gateway` SKILL.md narrow fast path step 1; `abf-report-runner` block-delivery Retrieve step.
+
+## Misreading grain and aggregation in multi-dimension tables
+
+**Failure:** Treating a cell measure (e.g. a per-MOB `Issue Amount` in a vintage row) as a cohort total, ratioing two cell measures to produce a cohort-level metric, or reading a cumulative curve value and a per-period dollar slice on the same row as the same time-grain. Worst on large vintage/cohort tables where no one eyeballs every row.
+
+**Rule:** Before narrating any response with more than one `group_by` dimension, follow `../contracts/reading-stratification-tables.md` — it covers column-role classification (dimension / cell measure / cohort constant / derived ratio / benchmark), grain scoping, cumulative-vs-periodic detection, and a plausibility check before delivering an implausible number as fact.
+
+**Enforcement:** `abf-gateway` SKILL.md Reading discipline section; `abf-report-runner` block-delivery Narrate step.
+
 ## Percentage scale confusion
 
 **Failure:** Interpreting a percentage value as 5 when the stored scale is 0.05, or filtering by "5" when the data is `data_type: percentage` (stored 0..1).

@@ -29,6 +29,10 @@ Skip when:
 
 Follow `knowledge/contracts/response-discipline.md` for every user-facing reply. The short version: internal harness work is silent by default. Do not narrate server detection, skill loading, or tool sequencing. Speak only when the analyst must choose, when a blocker requires action, when delivering analysis or report content, or when confirming completion.
 
+## Reading discipline
+
+Follow `knowledge/contracts/reading-stratification-tables.md` before narrating any `get_stratification_analytics_data` response with more than one `group_by` dimension (vintage, cohort, MOB × date). Grain and aggregation-function misreads on these tables are the leading cause of wrong analysis, especially once the row count is large enough that no one eyeballs every row.
+
 ## Step 1: Confirm ABF MCP availability and environment
 
 Find the ABF server by looking for ABF-specific MCP tools — `list_transactions`, `list_transaction_analytics`, `get_stratification_analytics_data` — among the available tools. If none are present, say so and stop.
@@ -45,7 +49,7 @@ Classify the question scope — verb/noun based, needs no catalog:
 
 **Narrow fast path — answer inline, no skill hops.** For `narrow`, do NOT load `abf-asset-class-context` and do NOT enter `abf-report-runner`:
 
-1. Run the required chain directly: `list_transaction_analytics` → `get_filterable_columns` (call this whenever a filter / bucket / status / category is implied — it returns the allowed labels; never guess them) → `get_stratification_analytics_data`. Trust the CSV glossary over column names.
+1. Run the required chain directly: `list_transaction_analytics` → `get_filterable_columns` (call this whenever a filter / bucket / status / category is implied — it returns the allowed labels; never guess them) → `get_stratification_analytics_data` with an explicit, conservative `limit` (start ~50-100 rows, not the 2000 default/max — see `knowledge/reference/common-pitfalls.md`). Trust the CSV glossary over column names.
 2. Use the active `transaction_id` from session context. Call `list_transactions` only when the transaction must still be identified, or for cross-transaction work.
 3. Deliver the answer, ending with the analytics name and source `url` for each retrieval it drew on.
 
@@ -92,6 +96,7 @@ On-demand references; the gateway does not preload them.
 - `knowledge/reference/common-pitfalls.md` — defensive patterns.
 - `knowledge/reference/derived-metrics.md` — SMM/CPR/MoM/concentration-drift formulas.
 - `knowledge/reference/visuals-playbook.md` — chart-type defaults per analysis pattern.
+- `knowledge/reference/artifact-style.md` — colors, typography, and page layout for any rendered artifact (HTML dashboard, exported document, image). Consult whenever producing one.
 
 ## Never
 

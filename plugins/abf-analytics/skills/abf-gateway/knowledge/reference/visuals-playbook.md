@@ -2,6 +2,8 @@
 
 Reference for choosing what interactive chart, table, diagram, or timeline to produce. Consult when producing a visual and the current MCP client supports inline artifacts. Text-only clients fall back to compact markdown tables — keep the analytical structure the same.
 
+This file picks the chart type. For colors, fonts, and page/card layout, see `artifact-style.md`.
+
 ## When to produce a visual
 
 Produce a visual whenever the data is visualization-friendly:

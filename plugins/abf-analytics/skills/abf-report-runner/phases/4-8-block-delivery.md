@@ -56,8 +56,8 @@ The block's domain is in scope. For blocks 3-5, the block's methodology section 
 For the current block:
 
 1. **Load the block's source.** Blocks 1–2 follow the inline specs above. Blocks 3-5 read the methodology section named in the block table (`read_resource` on the catalog's `on_demand` key, once per run; reuse the in-memory copy after).
-2. **Retrieve.** Call `get_stratification_analytics_data` for the analytics the block needs.
-3. **Narrate.** Author the block's analytical narrative per the source's `## Analyze` and `## Format` sections.
+2. **Retrieve.** Call `get_stratification_analytics_data` for the analytics the block needs, with an explicit conservative `limit` (start ~50-100 rows — the block only summarizes a handful of figures; see `../../abf-gateway/knowledge/reference/common-pitfalls.md` on oversized results).
+3. **Narrate.** Author the block's analytical narrative per the source's `## Analyze` and `## Format` sections. For Blocks 3-4 (loss-vintage, prepayment) and any other multi-dimension response, follow `../../abf-gateway/knowledge/contracts/reading-stratification-tables.md` first — these are exactly the cohort/MOB × date tables where cell-vs-cohort and cumulative-vs-periodic misreads happen.
 4. **Visual** (when visuals are on). Produce the block's default visual per `../../abf-gateway/knowledge/reference/visuals-playbook.md`.
 5. **Deliver to the analyst.** Send the narrative + visual + the source `url` for each analytics fetched in this block (mandatory — see Context window management above).
 6. **Checkpoint prompt.** "Next up: [Section Title]. Continue, skip, or jump to Key Findings?" — section titles follow the sequence: Portfolio Overview → Credit Performance → Loss Vintage Analysis → Prepayment Vintage Analysis → Geographic & FICO Concentration → Key Findings & Risk Assessment.
